@@ -25,6 +25,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     document.querySelector('header > div:first-child').prepend(redditClientButtons);
 
+    /* Remove all target blank links */
+    // Start observing the target node for configured mutations
+    observer.observe(document.body, config);
+
+
 });
 
 function goBack() {
@@ -34,3 +39,22 @@ function goBack() {
 function goHome() {
     window.location = '/';
 }
+
+
+// Options for the observer
+const config = { attributes: true, childList: true, subtree: true };
+
+// Callback function to remove all target _blank 
+const callback = function (mutationsList, observer) {
+    Array.from(document.querySelectorAll('a[target="_blank"]'))
+        .forEach(link => {
+            link.removeAttribute('target');
+        }
+        );
+};
+
+// Create observer instance linked to the callback function
+const observer = new MutationObserver(callback);
+
+// Later, to stop observing
+// observer.disconnect();

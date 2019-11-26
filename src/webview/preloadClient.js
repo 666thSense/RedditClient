@@ -6,9 +6,6 @@ const clientCSS = fs.readFileSync(clientCSSPath);
 var clientJSPath = path.join(__dirname, 'client.js');
 const clientJS = fs.readFileSync(clientJSPath);
 
-console.log("pingpingping")
-
-
 process.once('document-start', () => {
     console.log('This is the awesome document start event!');
 
