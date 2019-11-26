@@ -1,0 +1,46 @@
+/* site.css */
+
+/* header is draggable... */
+header {
+  -webkit-app-region: drag !important;
+}
+
+/* but any buttons inside the header shouldn't be draggable */
+header button,
+header input,
+header a {
+  -webkit-app-region: no-drag !important;
+}
+
+/* style the redditClientButtons */
+#redditClientButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto 20px auto 0px;
+
+}
+
+/* style the specific Buttons */
+#navigateBackButton, #navigateHomeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box !important;
+  height: 40px !important;
+  width: 40px !important;
+  transition: all 0.2s ease;
+  border-radius: 50%;
+}
+
+#navigateHomeButton {
+  margin-right: 10px;
+}
+
+#navigateBackButton:hover, #navigateHomeButton:hover{
+  
+  border: 1px solid gray;
+  box-shadow: 0px 0px 2px 2px lightgray;
+  box-sizing: border-box !important;
+
+}
