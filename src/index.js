@@ -31,15 +31,33 @@ const createWindow = () => {
   mainWindow.webContents.openDevTools();
 
   // open external in default browser
-  mainWindow.webContents.on('new-window', (event, urlToGo) => {
+  mainWindow.webContents.on('new-window', (event, urlToGo, frameName, disposition, options, additionalFeatures, referrer) => {
     /* if (mainWindow.useDefaultWindowBehaviour) {
         mainWindow.useDefaultWindowBehaviour = false;
         return;
     } */
+    console.log(frameName);
+    console.log(disposition);
+    console.log(options);
+    console.log(additionalFeatures);
+    console.log(referrer);
 
     event.preventDefault();
     shell.openExternal(urlToGo);
-});
+  });
+  mainWindow.webContents.on('will-redirect', (event, urlToGo, isInPlace) => {
+    /* if (mainWindow.useDefaultWindowBehaviour) {
+        mainWindow.useDefaultWindowBehaviour = false;
+        return;
+    } */
+    console.log(urlToGo);
+    if(!isInPlace){
+      event.preventDefault();
+      shell.openExternal(urlToGo);
+    }
+    
+  });
+
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
