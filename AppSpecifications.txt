@@ -1,0 +1,11 @@
+RedditClient
+
+-backButton                                                     X
+-homeButton                                                     X
+-Preserve login (cache etc)                                     X
+-icon                                                           X
+-appname                                                        X
+-contextMenu
+-Only allow internal links, open external in default browser    X
+-loading overlay
+-notification
