@@ -5,7 +5,12 @@ RedditClient
 -Preserve login (cache etc)                                     X
 -icon                                                           X
 -appname                                                        X
--contextMenu
+-contextMenu                                                    X
 -Only allow internal links, open external in default browser    X
--loading overlay
+-loading overlay                                                X
 -notification
+
+
+either only remove black if not a:first-child = img
+
+or add x button via css

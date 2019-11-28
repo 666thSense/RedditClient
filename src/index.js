@@ -1,4 +1,21 @@
-const { app, BrowserWindow, shell } = require('electron');
+const {
+  app,
+  BrowserWindow,
+  shell
+} = require('electron');
+const contextMenu = require('electron-context-menu');
+
+// add context menu
+contextMenu({
+  prepend: (defaultActions, params, browserWindow) => [{
+    label: 'Search Google for “{selection}”',
+    // Only show it when right-clicking text
+    visible: params.selectionText.trim().length > 0,
+    click: () => {
+      shell.openExternal(`https://google.com/search?q=${encodeURIComponent(params.selectionText)}`);
+    }
+  }]
+});
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
@@ -45,18 +62,24 @@ const createWindow = () => {
     event.preventDefault();
     shell.openExternal(urlToGo);
   });
-  mainWindow.webContents.on('will-redirect', (event, urlToGo, isInPlace) => {
-    /* if (mainWindow.useDefaultWindowBehaviour) {
-        mainWindow.useDefaultWindowBehaviour = false;
-        return;
-    } */
+
+  mainWindow.webContents.on('will-redirect', (event, urlToGo, isInPlace, isMainFrame) => {
     console.log(urlToGo);
-    if(!isInPlace){
-      event.preventDefault();
-      shell.openExternal(urlToGo);
+    console.log(isInPlace);
+    console.log(isMainFrame);
+    if (!isInPlace) { 
+        event.preventDefault();
+        shell.openExternal(urlToGo);
     }
-    
-  });
+  }); 
+
+  /* mainWindow.webContents.on('will-navigate', (event, url) => {
+  
+    console.log(url);
+
+    event.preventDefault();
+    shell.openExternal(url);
+  }); */
 
 
   // Emitted when the window is closed.

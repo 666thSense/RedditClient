@@ -3,6 +3,25 @@ console.log("Hi there, Im the awesome Client script!");
 document.addEventListener("DOMContentLoaded", function (event) {
     console.log("DOM fully loaded and parsed");
 
+    /* Add Remove Button for fullsized images */
+    if (document.body.childElementCount <= 1) {
+        var closeButton = document.createElement('button');
+        closeButton.setAttribute("onclick", "goBack()");
+        closeButton.setAttribute("id", "navigateCloseButton");
+        closeButton.innerHTML = '<i class="fas fa-times"></i>';
+
+        if (document.querySelector('body'))
+            document.querySelector('body').prepend(closeButton);
+    }
+
+    /* Add loader overlay */
+    var loaderOverlay = document.createElement('div');
+    loaderOverlay.setAttribute('id', 'ClientLoaderOverlay');
+    var loaderShow = document.createElement('div');
+    loaderShow.setAttribute('id', 'ClientLoaderAnimator');
+    loaderOverlay.appendChild(loaderShow);
+    document.body.appendChild(loaderOverlay);
+
     /* add the redditClientButtons */
     var redditClientButtons = document.createElement('div');
     redditClientButtons.setAttribute("id", "redditClientButtons");
@@ -23,13 +42,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     redditClientButtons.append(backButton);
 
-    document.querySelector('header > div:first-child').prepend(redditClientButtons);
+    if (document.querySelector('header > div:first-child'))
+        document.querySelector('header > div:first-child').prepend(redditClientButtons);
 
     /* Remove all target blank links */
     // Start observing the target node for configured mutations
     observer.observe(document.body, config);
 
+    console.log("peng");
 
+});
+
+window.addEventListener('load', (event) => {
+    console.log("loool");
+    document.querySelector('#ClientLoaderOverlay').setAttribute('style', 'display: none;');
 });
 
 function goBack() {
@@ -42,15 +68,18 @@ function goHome() {
 
 
 // Options for the observer
-const config = { attributes: true, childList: true, subtree: true };
+const config = {
+    attributes: true,
+    childList: true,
+    subtree: true
+};
 
 // Callback function to remove all target _blank 
 const callback = function (mutationsList, observer) {
     Array.from(document.querySelectorAll('a[target="_blank"]'))
         .forEach(link => {
             link.removeAttribute('target');
-        }
-        );
+        });
 };
 
 // Create observer instance linked to the callback function

@@ -22,7 +22,7 @@ header a {
 }
 
 /* style the specific Buttons */
-#navigateBackButton, #navigateHomeButton {
+#navigateCloseButton, #navigateBackButton, #navigateHomeButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,14 +33,54 @@ header a {
   border-radius: 50%;
 }
 
+#navigateCloseButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  z-index: 1000;
+}
+
 #navigateHomeButton {
   margin-right: 10px;
 }
 
-#navigateBackButton:hover, #navigateHomeButton:hover{
+#navigateCloseButton:hover, #navigateBackButton:hover, #navigateHomeButton:hover{
   
   border: 1px solid gray;
   box-shadow: 0px 0px 2px 2px lightgray;
   box-sizing: border-box !important;
 
+}
+
+/* ClientLoaderOverlay */
+#ClientLoaderOverlay {
+  width: 100vw; 
+  height: 100vh; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  background-color: #EFF7FF;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10000;
+  cursor: pointer;
+}
+
+#ClientLoaderAnimator {
+  border: 16px solid lightgray;
+  border-radius: 50%;
+  border-top: 16px solid #FF5700;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
