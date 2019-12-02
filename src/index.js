@@ -53,23 +53,28 @@ const createMainWindow = () => {
         mainWindow.useDefaultWindowBehaviour = false;
         return;
     } */
-    console.log(frameName);
-    console.log(disposition);
-    console.log(options);
-    console.log(additionalFeatures);
-    console.log(referrer);
+    console.log('new-window ' + frameName);
+    console.log('new-window ' + disposition);
+    console.log('new-window ' + options);
+    console.log('new-window ' + additionalFeatures);
+    console.log('new-window ' + referrer);
 
     event.preventDefault();
     shell.openExternal(urlToGo);
   });
 
-  mainWindow.webContents.on('will-redirect', (event, urlToGo, isInPlace, isMainFrame) => {
-    console.log(urlToGo);
-    console.log(isInPlace);
-    console.log(isMainFrame);
+  mainWindow.webContents.on('will-redirect', (event, urlToGo, isInPlace, isMainFrame, frameProcessId, frameRoutingId ) => {
+    console.log('will-redirect ' + urlToGo);
+    console.log('will-redirect ' + isInPlace);
+    console.log('will-redirect ' + isMainFrame);
+    console.log('will-redirect ' + frameProcessId);
+    console.log('will-redirect ' + frameRoutingId);
     if (!isInPlace) { 
+      //mainFrame added for stop opening random tabs for ad queries
+      if (isMainFrame){
         event.preventDefault();
         shell.openExternal(urlToGo);
+      }
     }
   }); 
 

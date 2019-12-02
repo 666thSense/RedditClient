@@ -1,16 +1,16 @@
 RedditClient
 
--backButton                                                     X
--homeButton                                                     X
+-backButton                                                     X-
+-homeButton                                                     X-
 -Preserve login (cache etc)                                     X
 -icon                                                           X
 -appname                                                        X
 -contextMenu                                                    X
 -Only allow internal links, open external in default browser    X
--loading overlay                                                X
+-loading overlay                                                X---
 -notification
 
 
-either only remove black if not a:first-child = img
+either only remove black if not a:first-child = img             X
 
-or add x button via css
+or add x button via css                                         X
