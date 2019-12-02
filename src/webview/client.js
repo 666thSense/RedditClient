@@ -78,7 +78,10 @@ const config = {
 const callback = function (mutationsList, observer) {
     Array.from(document.querySelectorAll('a[target="_blank"]'))
         .forEach(link => {
-            link.removeAttribute('target');
+            link.setAttribute('target', ''); 
+            // DONT USE
+            // link.removeAttribute('target');
+            // open random Ad-Links because somehow target is necessary
         });
 };
 
