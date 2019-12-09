@@ -1,6 +1,7 @@
 const {
   app,
   BrowserWindow,
+  BrowserView,
   shell
 } = require('electron');
 const contextMenu = require('electron-context-menu');
@@ -27,28 +28,46 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 let mainWindow;
 
 const createMainWindow = () => {
-  // Create the browser window.
+  // Create the main browser window.
   mainWindow = new BrowserWindow({
-    //show: false,
     width: 1280,
     height: 800,
+    
+  });
+
+  mainView = new BrowserView({
     webPreferences: {
       preload: `${__dirname}/webview/preloadClient.js`
     }
   });
 
+  mainWindow.setBrowserView(mainView);
+
   // and load the index.html of the app.
-  mainWindow.loadURL(`https://www.reddit.com`);
+  mainView.setAutoResize({});
+  mainView.webContents.loadURL(`https://www.reddit.com`);
+
+  loadWindow = new BrowserView({
+
+  });
+  loadWindow.webContents.loadURL(`file://${__dirname}/loadingScreen/loadingScreen.html`);
+
+  /* // Create loading window
+  loadWindow = new BrowserWindow({
+    parent: mainWindow,
+    //show: false,
+  });
+  loadWindow.loadURL(`file://${__dirname}/loadingScreen/loadingScreen.html`); */
 
   /* mainWindow.once('ready-to-show', () => {
     win.show()
   }); */
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  mainView.webContents.openDevTools();
 
   // open external in default browser
-  mainWindow.webContents.on('new-window', (event, urlToGo, frameName, disposition, options, additionalFeatures, referrer) => {
+  mainView.webContents.on('new-window', (event, urlToGo, frameName, disposition, options, additionalFeatures, referrer) => {
     /* if (mainWindow.useDefaultWindowBehaviour) {
         mainWindow.useDefaultWindowBehaviour = false;
         return;
@@ -63,20 +82,20 @@ const createMainWindow = () => {
     shell.openExternal(urlToGo);
   });
 
-  mainWindow.webContents.on('will-redirect', (event, urlToGo, isInPlace, isMainFrame, frameProcessId, frameRoutingId ) => {
+  mainView.webContents.on('will-redirect', (event, urlToGo, isInPlace, isMainFrame, frameProcessId, frameRoutingId) => {
     console.log('will-redirect ' + urlToGo);
     console.log('will-redirect ' + isInPlace);
     console.log('will-redirect ' + isMainFrame);
     console.log('will-redirect ' + frameProcessId);
     console.log('will-redirect ' + frameRoutingId);
-    if (!isInPlace) { 
+    if (!isInPlace) {
       //mainFrame added for stop opening random tabs for ad queries
-      if (isMainFrame){
+      if (isMainFrame) {
         event.preventDefault();
         shell.openExternal(urlToGo);
       }
     }
-  }); 
+  });
 
   /* mainWindow.webContents.on('will-navigate', (event, url) => {
   
@@ -84,6 +103,11 @@ const createMainWindow = () => {
 
     event.preventDefault();
     shell.openExternal(url);
+  }); */
+
+  /* mainWindow.webContents.on('did-finish-load', () => {
+    loadWindow.hide();
+    mainWindow.show();
   }); */
 
 
