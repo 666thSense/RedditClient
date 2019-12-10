@@ -7,7 +7,8 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "npm-run-all make:mac make:linux",
+    "make": "electron-forge make",
+    "make:all": "npm-run-all make:mac make:linux",
     "make:mac": "electron-forge make --platform=darwin",
     "make:linux": "electron-forge make --platform=linux",
     "make:windows": "electron-forge make --platform=win32",
@@ -54,6 +55,11 @@
             "icon": "./src/assets/reddit.png",
             "maintainer": "Joshua H.",
             "categories": ["Network"],
+            "description": "A simple Reddit Client powered by Electron.",
+            "genericName": "Client for Reddit",
+            "name": "redditclient",
+            "productDescription": "A simple Reddit Client powered by Electron.",
+            "productName": "RedditClient",   
             "section": "web"
           }
         },
@@ -64,7 +70,7 @@
             "maintainer": "Joshua H.",
             "categories": ["Network"],
             "description": "A simple Reddit Client powered by Electron.",
-            "genericName": "RedditClient",
+            "genericName": "Client for Reddit",
             "name": "redditclient",
             "productDescription": "A simple Reddit Client powered by Electron.",
             "productName": "RedditClient"          }
