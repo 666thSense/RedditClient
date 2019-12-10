@@ -16,3 +16,4 @@ RedditClient
 -or add x button via css                                         X
 
 -abstracting showing and hiding loader in new function
+-remove visit old reddit link or open in new tab
