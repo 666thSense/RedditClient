@@ -7,7 +7,10 @@
   "scripts": {
     "start": "electron-forge start",
     "package": "electron-forge package",
-    "make": "electron-forge make",
+    "make": "npm-run-all make:mac make:linux",
+    "make:mac": "electron-forge make --platform=darwin",
+    "make:linux": "electron-forge make --platform=linux",
+    "make:windows": "electron-forge make --platform=win32",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
@@ -24,34 +27,47 @@
     "forge": {
       "packagerConfig": {
         "appCopyright": "MIT",
-        "icon": "./src/assets/reddit512x512.icns"
+        "icon": "./src/assets/reddit512x512.icns",
+        "asar": true
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "redditclient"
+            "exe": "RedditClient",
+            "iconUrl": "./src/assets/reddit.png",
+            "setupExe": "RedditClient",
+            "setupIcon": "./src/assets/reddit.png",
+            "setupMsi": "RedditClient"
           }
-        },
-        {
-          "name": "@electron-forge/maker-zip",
-          "platforms": [
-            "darwin"
-          ]
         },
         {
           "name": "@electron-forge/maker-dmg",
           "config": {
-            "icon": "./src/assets/reddit.png"
+            "icon": "./src/assets/reddit.png",
+            "name": "RedditClient"
           }
         },
         {
           "name": "@electron-forge/maker-deb",
-          "config": {}
+          "config": {
+            "icon": "./src/assets/reddit.png",
+            "maintainer": "Joshua H.",
+            "categories": ["Network"],
+            "section": "web"
+          }
         },
         {
           "name": "@electron-forge/maker-rpm",
-          "config": {}
+          "config": {
+            "icon": "./src/assets/reddit.png",
+            "maintainer": "Joshua H.",
+            "categories": ["Network"],
+            "description": "A simple Reddit Client powered by Electron.",
+            "genericName": "RedditClient",
+            "name": "redditclient",
+            "productDescription": "A simple Reddit Client powered by Electron.",
+            "productName": "RedditClient"          }
         }
       ]
     }
