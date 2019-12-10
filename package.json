@@ -11,6 +11,8 @@
     "make:all": "npm-run-all make:mac make:linux",
     "make:mac": "electron-forge make --platform=darwin",
     "make:linux": "electron-forge make --platform=linux",
+    "make:linux:deb": "electron-forge make --platform=linux --targets=deb",
+    "make:linux:rpm": "electron-forge make --platform=linux --targets=rpm",
     "make:windows": "electron-forge make --platform=win32",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
@@ -29,10 +31,10 @@
       "packagerConfig": {
         "appCopyright": "MIT",
         "icon": "./src/assets/reddit512x512.icns",
-        "asar": true
+        "asar": true,
+        "executableName": "RedditClient"
       },
-      "makers": [
-        {
+      "makers": [{
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "exe": "RedditClient",
@@ -59,7 +61,7 @@
             "genericName": "Client for Reddit",
             "name": "redditclient",
             "productDescription": "A simple Reddit Client powered by Electron.",
-            "productName": "RedditClient",   
+            "productName": "RedditClient",
             "section": "web"
           }
         },
@@ -73,7 +75,8 @@
             "genericName": "Client for Reddit",
             "name": "redditclient",
             "productDescription": "A simple Reddit Client powered by Electron.",
-            "productName": "RedditClient"          }
+            "productName": "RedditClient"
+          }
         }
       ]
     }
