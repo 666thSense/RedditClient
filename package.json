@@ -11,8 +11,8 @@
     "make:all": "npm-run-all make:mac make:linux",
     "make:mac": "electron-forge make --platform=darwin",
     "make:linux": "electron-forge make --platform=linux",
-    "make:linux:deb": "electron-forge make --platform=linux --targets=deb",
-    "make:linux:rpm": "electron-forge make --platform=linux --targets=rpm",
+    "make:linux:deb": "electron-forge make --platform=linux --targets=@electron-forge/maker-deb",
+    "make:linux:rpm": "electron-forge make --platform=linux --targets=@electron-forge/maker-rpm",
     "make:windows": "electron-forge make --platform=win32",
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
@@ -32,7 +32,7 @@
         "appCopyright": "MIT",
         "icon": "./src/assets/reddit512x512.icns",
         "asar": true,
-        "executableName": "RedditClient"
+        "executableName": "redditclient"
       },
       "makers": [{
           "name": "@electron-forge/maker-squirrel",
