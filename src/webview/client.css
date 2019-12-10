@@ -18,7 +18,6 @@ header a {
   align-items: center;
   justify-content: space-between;
   margin: auto 20px auto 0px;
-
 }
 
 /* style the specific Buttons */
@@ -31,6 +30,7 @@ header a {
   width: 40px !important;
   transition: all 0.2s ease;
   border-radius: 50%;
+  outline: none !important;
 }
 
 #navigateCloseButton {

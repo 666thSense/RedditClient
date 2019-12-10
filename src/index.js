@@ -1,8 +1,8 @@
 const {
   app,
   BrowserWindow,
-  BrowserView,
-  shell
+  shell,
+  ipcMain
 } = require('electron');
 const contextMenu = require('electron-context-menu');
 
@@ -26,52 +26,42 @@ if (require('electron-squirrel-startup')) { // eslint-disable-line global-requir
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
+let loadWindow;
 
 const createMainWindow = () => {
   // Create the main browser window.
   mainWindow = new BrowserWindow({
+    title: 'RedditClient',
+    icon: `${__dirname}/assets/reddit.png`,
+    // hide window until fully loaded
+    show: false,
     width: 1280,
     height: 800,
-    
-  });
-
-  mainView = new BrowserView({
     webPreferences: {
-      preload: `${__dirname}/webview/preloadClient.js`
+      preload: `${__dirname}/webview/preloadClient.js`,
+      nodeIntegration: true
     }
   });
 
-  mainWindow.setBrowserView(mainView);
-
-  // and load the index.html of the app.
-  mainView.setAutoResize({});
-  mainView.webContents.loadURL(`https://www.reddit.com`);
-
-  loadWindow = new BrowserView({
-
-  });
-  loadWindow.webContents.loadURL(`file://${__dirname}/loadingScreen/loadingScreen.html`);
-
-  /* // Create loading window
-  loadWindow = new BrowserWindow({
-    parent: mainWindow,
-    //show: false,
-  });
-  loadWindow.loadURL(`file://${__dirname}/loadingScreen/loadingScreen.html`); */
-
-  /* mainWindow.once('ready-to-show', () => {
-    win.show()
-  }); */
+  // and load the Reddit Frontpage.
+  mainWindow.webContents.loadURL(`https://www.reddit.com`);
 
   // Open the DevTools.
-  mainView.webContents.openDevTools();
+  /* mainWindow.webContents.openDevTools(); */
+
+  // prevent changing the title and icon
+  mainWindow.webContents.on('page-title-updated', (event) => {
+    event.preventDefault();
+  });
+  mainWindow.webContents.on('page-favicon-updated', (event) => {
+    event.preventDefault();
+  });
+  mainWindow.on('page-title-updated', (event) => {
+    event.preventDefault();
+  });
 
   // open external in default browser
-  mainView.webContents.on('new-window', (event, urlToGo, frameName, disposition, options, additionalFeatures, referrer) => {
-    /* if (mainWindow.useDefaultWindowBehaviour) {
-        mainWindow.useDefaultWindowBehaviour = false;
-        return;
-    } */
+  mainWindow.webContents.on('new-window', (event, urlToGo, frameName, disposition, options, additionalFeatures, referrer) => {
     console.log('new-window ' + frameName);
     console.log('new-window ' + disposition);
     console.log('new-window ' + options);
@@ -82,7 +72,7 @@ const createMainWindow = () => {
     shell.openExternal(urlToGo);
   });
 
-  mainView.webContents.on('will-redirect', (event, urlToGo, isInPlace, isMainFrame, frameProcessId, frameRoutingId) => {
+  mainWindow.webContents.on('will-redirect', (event, urlToGo, isInPlace, isMainFrame, frameProcessId, frameRoutingId) => {
     console.log('will-redirect ' + urlToGo);
     console.log('will-redirect ' + isInPlace);
     console.log('will-redirect ' + isMainFrame);
@@ -97,19 +87,67 @@ const createMainWindow = () => {
     }
   });
 
-  /* mainWindow.webContents.on('will-navigate', (event, url) => {
-  
-    console.log(url);
+  ipcMain.on('ExternalResourceClosed', (event) => {
+    if (loadWindow) {
+      loadWindow.setBounds(mainWindow.getBounds());
+      mainWindow.hide();
+      loadWindow.show();
+    }
+    console.log("ExternalResourceClosed");
+  });
 
-    event.preventDefault();
-    shell.openExternal(url);
-  }); */
+  ipcMain.on('DocumentStartLoading', (event) => {
+    if (loadWindow) {
+      loadWindow.setBounds(mainWindow.getBounds());
+      mainWindow.hide();
+      loadWindow.show();
+    }
+    console.log("DocumentStartLoading");
+  });
 
-  /* mainWindow.webContents.on('did-finish-load', () => {
-    loadWindow.hide();
+  ipcMain.on('DocumentFinishedLoading', (event) => {
+    if (loadWindow) {
+      mainWindow.setBounds(loadWindow.getBounds());
+      loadWindow.hide();
+      mainWindow.show();
+    }
+    console.log("DocumentFinishedLoading");
+  });
+
+  mainWindow.webContents.on('did-finish-load', () => {
+    // setting the window title
+    mainWindow.setTitle('RedditClient');
+
+    if (loadWindow) {
+      mainWindow.setBounds(loadWindow.getBounds());
+      loadWindow.hide();
+      mainWindow.show();
+    }
+    console.log("did-finish-load");
+  });
+
+  mainWindow.webContents.on('will-navigate', (event, urlToGo) => {
+    console.log('will-navigate ' + urlToGo);
+    if (loadWindow) {
+      loadWindow.setBounds(mainWindow.getBounds());
+      mainWindow.hide();
+      loadWindow.show();
+    }
+  });
+
+  /* mainWindow.webContents.on('did-stop-loading', () => {
+    if (loadWindow) {
+      loadWindow.hide();
+    }
     mainWindow.show();
-  }); */
+  });
 
+  mainWindow.webContents.on('did-start-loading', () => {
+    mainWindow.hide();
+    if (loadWindow) {
+      loadWindow.show();
+    }
+  }); */
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
@@ -120,10 +158,46 @@ const createMainWindow = () => {
   });
 };
 
+const createLoadWindow = () => {
+  // Create the main browser window.
+  loadWindow = new BrowserWindow({
+    title: 'RedditClient',
+    icon: `${__dirname}/assets/reddit.png`,
+    // define width and height for the window
+    // width: 1280,
+    // height: 800,
+    // remove the window frame, so it will become a frameless window
+    frame: false,
+    // and set the transparency, to remove any window background color
+    transparent: true
+  });
+
+  if (mainWindow) {
+    loadWindow.setBounds(mainWindow.getBounds());
+  }
+
+  loadWindow.loadURL(`file://${__dirname}/loadingScreen/loadingScreen.html`);
+
+  loadWindow.webContents.on('did-finish-load', () => {
+    loadWindow.show();
+  });
+
+  loadWindow.on('closed', () => {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    loadWindow = null;
+  });
+
+};
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createMainWindow);
+app.on('ready', () => {
+  createMainWindow();
+  createLoadWindow();
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
@@ -137,8 +211,11 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On OS X it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
+  if (mainWindow === null || loadWindow === null) {
+    mainWindow = null;
+    loadWindow = null
     createMainWindow();
+    createLoadWindow();
   }
 });
 

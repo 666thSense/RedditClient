@@ -1,26 +1,24 @@
 console.log("Hi there, Im the awesome Client script!");
+const { ipcRenderer } = require('electron')
+
+window.addEventListener("load", function (event) {
+    ipcRenderer.send('DocumentFinishedLoading');
+});
 
 document.addEventListener("DOMContentLoaded", function (event) {
     console.log("DOM fully loaded and parsed");
+    //ipcRenderer.sendSync('DocumentFinishedLoading');
 
-    /* Add Remove Button for fullsized images */
+    /* Add Back Button for fullsized images */
     if (document.body.childElementCount <= 1) {
         var closeButton = document.createElement('button');
-        closeButton.setAttribute("onclick", "goBack()");
+        closeButton.setAttribute("onclick", "goClose()");
         closeButton.setAttribute("id", "navigateCloseButton");
         closeButton.innerHTML = '<i class="fas fa-times"></i>';
 
         if (document.querySelector('body'))
             document.querySelector('body').prepend(closeButton);
     }
-
-    /* Add loader overlay */
-    var loaderOverlay = document.createElement('div');
-    loaderOverlay.setAttribute('id', 'ClientLoaderOverlay');
-    var loaderShow = document.createElement('div');
-    loaderShow.setAttribute('id', 'ClientLoaderAnimator');
-    loaderOverlay.appendChild(loaderShow);
-    document.body.appendChild(loaderOverlay);
 
     /* add the redditClientButtons */
     var redditClientButtons = document.createElement('div');
@@ -42,8 +40,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     redditClientButtons.append(backButton);
 
-    if (document.querySelector('header > div:first-child'))
-        document.querySelector('header > div:first-child').prepend(redditClientButtons);
+    if (document.querySelector('header > div:first-child > div:first-child > a'))
+        document.querySelector('header > div:first-child > div:first-child > a').prepend(redditClientButtons);
 
     /* Remove all target blank links */
     // Start observing the target node for configured mutations
@@ -53,10 +51,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 });
 
-window.addEventListener('load', (event) => {
-    console.log("loool");
-    document.querySelector('#ClientLoaderOverlay').setAttribute('style', 'display: none;');
-});
+function goClose() {
+    ipcRenderer.send('ExternalResourceClosed');
+    window.history.back();
+}
 
 function goBack() {
     window.history.back();

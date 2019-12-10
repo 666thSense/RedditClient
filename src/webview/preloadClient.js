@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require('fs');
+const { ipcRenderer } = require('electron')
 
 var clientCSSPath = path.join(__dirname, 'client.css');
 const clientCSS = fs.readFileSync(clientCSSPath);
@@ -8,6 +9,7 @@ const clientJS = fs.readFileSync(clientJSPath);
 
 process.once('document-start', () => {
     console.log('This is the awesome document start event!');
+    ipcRenderer.send('DocumentStartLoading');
 
     /* inject custom JS */
     var script = document.createElement('script');

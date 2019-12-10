@@ -1,8 +1,8 @@
 {
   "name": "redditclient",
-  "productName": "redditclient",
-  "version": "1.0.0",
-  "description": "My Electron application description",
+  "productName": "RedditClient",
+  "version": "0.1.0",
+  "description": "A simple Reddit Client powered by Electron.",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -11,12 +11,21 @@
     "publish": "electron-forge publish",
     "lint": "echo \"No linting configured\""
   },
-  "keywords": [],
-  "author": "jsh",
+  "keywords": [
+    "Reddit",
+    "Client",
+    "RedditClient",
+    "Electron",
+    "ElectronJS"
+  ],
+  "author": "Joshua H.",
   "license": "MIT",
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "appCopyright": "MIT",
+        "icon": "./src/assets/reddit512x512.icns"
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -29,6 +38,12 @@
           "platforms": [
             "darwin"
           ]
+        },
+        {
+          "name": "@electron-forge/maker-dmg",
+          "config": {
+            "icon": "./src/assets/reddit.png"
+          }
         },
         {
           "name": "@electron-forge/maker-deb",
@@ -46,11 +61,12 @@
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "6.0.0-beta.45",
-    "@electron-forge/maker-deb": "6.0.0-beta.45",
-    "@electron-forge/maker-rpm": "6.0.0-beta.45",
-    "@electron-forge/maker-squirrel": "6.0.0-beta.45",
-    "@electron-forge/maker-zip": "6.0.0-beta.45",
-    "electron": "7.1.2"
+    "@electron-forge/cli": "^6.0.0-beta.45",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.45",
+    "@electron-forge/maker-deb": "^6.0.0-beta.45",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.45",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.45",
+    "@electron-forge/maker-zip": "^6.0.0-beta.45",
+    "electron": "^7.1.2"
   }
 }
