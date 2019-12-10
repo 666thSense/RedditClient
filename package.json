@@ -56,7 +56,9 @@
           "config": {
             "icon": "./src/assets/reddit.png",
             "maintainer": "Joshua H.",
-            "categories": ["Network"],
+            "categories": [
+              "Network"
+            ],
             "description": "A simple Reddit Client powered by Electron.",
             "genericName": "Client for Reddit",
             "name": "redditclient",
@@ -70,7 +72,9 @@
           "config": {
             "icon": "./src/assets/reddit.png",
             "maintainer": "Joshua H.",
-            "categories": ["Network"],
+            "categories": [
+              "Network"
+            ],
             "description": "A simple Reddit Client powered by Electron.",
             "genericName": "Client for Reddit",
             "name": "redditclient",
