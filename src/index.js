@@ -68,6 +68,11 @@ const createMainWindow = () => {
     console.log('new-window ' + additionalFeatures);
     console.log('new-window ' + referrer);
 
+    if (loadWindow) {
+      mainWindow.setBounds(loadWindow.getBounds());
+      loadWindow.hide();
+      mainWindow.show();
+    }
     event.preventDefault();
     shell.openExternal(urlToGo);
   });
@@ -81,6 +86,11 @@ const createMainWindow = () => {
     if (!isInPlace) {
       //mainFrame added for stop opening random tabs for ad queries
       if (isMainFrame) {
+        if (loadWindow) {
+          mainWindow.setBounds(loadWindow.getBounds());
+          loadWindow.hide();
+          mainWindow.show();
+        }
         event.preventDefault();
         shell.openExternal(urlToGo);
       }

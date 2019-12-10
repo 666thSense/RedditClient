@@ -11,7 +11,8 @@ RedditClient
 -notification
 
 
-either only remove black if not a:first-child = img             X
+-either only remove black if not a:first-child = img             X
 
-or add x button via css                                         X
+-or add x button via css                                         X
 
+-abstracting showing and hiding loader in new function
