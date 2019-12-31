@@ -32,7 +32,7 @@
         "appCopyright": "MIT",
         "icon": "./src/assets/Reddit_Mark_OnDark.icns",
         "asar": true,
-        "executableName": "redditclient"
+        "executableName": "RedditClient"
       },
       "makers": [
         {
