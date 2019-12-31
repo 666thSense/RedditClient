@@ -8,7 +8,7 @@
     "start": "electron-forge start",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "make:all": "npm-run-all make:mac make:linux",
+    "make:all": "npm-run-all make:mac make:linux make:windows",
     "make:mac": "electron-forge make --platform=darwin",
     "make:linux": "electron-forge make --platform=linux",
     "make:linux:deb": "electron-forge make --platform=linux --targets=@electron-forge/maker-deb",
