@@ -30,31 +30,32 @@
     "forge": {
       "packagerConfig": {
         "appCopyright": "MIT",
-        "icon": "./src/assets/reddit512x512.icns",
+        "icon": "./src/assets/Reddit_Mark_OnDark.icns",
         "asar": true,
         "executableName": "redditclient"
       },
-      "makers": [{
+      "makers": [
+        {
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "exe": "RedditClient",
-            "iconUrl": "./src/assets/reddit.png",
+            "iconUrl": "./src/assets/Reddit_Mark_OnDark.ico",
             "setupExe": "RedditClient",
-            "setupIcon": "./src/assets/reddit.png",
+            "setupIcon": "./src/assets/Reddit_Mark_OnDark.ico",
             "setupMsi": "RedditClient"
           }
         },
         {
           "name": "@electron-forge/maker-dmg",
           "config": {
-            "icon": "./src/assets/reddit.png",
+            "icon": "./src/assets/Reddit_Mark_OnDark.icns",
             "name": "RedditClient"
           }
         },
         {
           "name": "@electron-forge/maker-deb",
           "config": {
-            "icon": "./src/assets/reddit.png",
+            "icon": "./src/assets/Reddit_Mark_OnDark.png",
             "maintainer": "Joshua H.",
             "categories": [
               "Network"
@@ -70,7 +71,7 @@
         {
           "name": "@electron-forge/maker-rpm",
           "config": {
-            "icon": "./src/assets/reddit.png",
+            "icon": "./src/assets/Reddit_Mark_OnDark.png",
             "maintainer": "Joshua H.",
             "categories": [
               "Network"
