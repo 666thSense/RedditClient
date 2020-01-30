@@ -47,8 +47,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
     // Start observing the target node for configured mutations
     observer.observe(document.body, config);
 
-    console.log("peng");
-
 });
 
 function goClose() {

@@ -11,6 +11,7 @@
     "make:all": "npm-run-all make:mac make:linux make:windows",
     "make:mac": "electron-forge make --platform=darwin",
     "make:linux": "electron-forge make --platform=linux",
+    "make:linux:snap": "electron-forge make --platform=linux --targets=@electron-forge/maker-snap",
     "make:linux:deb": "electron-forge make --platform=linux --targets=@electron-forge/maker-deb",
     "make:linux:rpm": "electron-forge make --platform=linux --targets=@electron-forge/maker-rpm",
     "make:windows": "electron-forge make --platform=win32",
@@ -30,39 +31,38 @@
     "forge": {
       "packagerConfig": {
         "appCopyright": "MIT",
-        "icon": "./src/assets/Reddit_Mark_OnDark.icns",
         "asar": true,
-        "executableName": "RedditClient"
+        "icon": "./src/assets/icon.icns"      
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
             "exe": "RedditClient",
-            "iconUrl": "./src/assets/Reddit_Mark_OnDark.ico",
+            "iconUrl": "./src/assets/icon.ico",
             "setupExe": "RedditClient",
-            "setupIcon": "./src/assets/Reddit_Mark_OnDark.ico",
+            "setupIcon": "./src/assets/icon.ico",
             "setupMsi": "RedditClient"
           }
         },
         {
           "name": "@electron-forge/maker-dmg",
           "config": {
-            "icon": "./src/assets/Reddit_Mark_OnDark.icns",
+            "icon": "./src/assets/icon.icns",
             "name": "RedditClient"
           }
         },
         {
           "name": "@electron-forge/maker-deb",
           "config": {
-            "icon": "./src/assets/Reddit_Mark_OnDark.png",
+            "icon": "./src/assets/512x512.png",
             "maintainer": "Joshua H.",
             "categories": [
               "Network"
             ],
             "description": "A simple Reddit Client powered by Electron.",
             "genericName": "Client for Reddit",
-            "name": "redditclient",
+            "name": "RedditClient",
             "productDescription": "A simple Reddit Client powered by Electron.",
             "productName": "RedditClient",
             "section": "web"
@@ -71,16 +71,35 @@
         {
           "name": "@electron-forge/maker-rpm",
           "config": {
-            "icon": "./src/assets/Reddit_Mark_OnDark.png",
-            "maintainer": "Joshua H.",
-            "categories": [
-              "Network"
-            ],
-            "description": "A simple Reddit Client powered by Electron.",
-            "genericName": "Client for Reddit",
-            "name": "redditclient",
-            "productDescription": "A simple Reddit Client powered by Electron.",
-            "productName": "RedditClient"
+            "options":{
+              "icon": "./src/assets/512x512.png",
+              "maintainer": "Joshua H.",
+              "categories": [
+                "Network"
+              ],
+              "description": "A simple Reddit Client powered by Electron.",
+              "genericName": "Client for Reddit",
+              "name": "RedditClient",
+              "productDescription": "A simple Reddit Client powered by Electron.",
+              "productName": "RedditClient",
+              "homepage": "https://www.666thsense.com/redditclient/"
+            }
+          }
+        },
+        {
+          "name": "@electron-forge/maker-snap",
+          "config": {
+            "confinement": "strict",
+            "desciption": "This is a simple Reddit Client based on the Electron framework.",
+            "features": {
+              "audio": true,
+              "browserSandbox": true,
+              "mpris": "com.example.mpris",
+              "webgl": true
+            },
+            "grade": "devel",
+            "summary": "A simple Reddit Client based on the Electron",
+            "base": "core18"
           }
         }
       ]
@@ -92,9 +111,10 @@
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.45",
-    "@electron-forge/maker-dmg": "^6.0.0-beta.45",
     "@electron-forge/maker-deb": "^6.0.0-beta.45",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.45",
     "@electron-forge/maker-rpm": "^6.0.0-beta.45",
+    "@electron-forge/maker-snap": "^6.0.0-beta.47",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.45",
     "@electron-forge/maker-zip": "^6.0.0-beta.45",
     "electron": "^7.1.2"

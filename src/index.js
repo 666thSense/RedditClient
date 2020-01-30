@@ -32,7 +32,7 @@ const createMainWindow = () => {
   // Create the main browser window.
   mainWindow = new BrowserWindow({
     title: 'RedditClient',
-    icon: `${__dirname}/assets/reddit.png`,
+    icon: `${__dirname}/assets/512x512.png`,
     // hide window until fully loaded
     show: false,
     width: 1280,
@@ -62,11 +62,11 @@ const createMainWindow = () => {
 
   // open external in default browser
   mainWindow.webContents.on('new-window', (event, urlToGo, frameName, disposition, options, additionalFeatures, referrer) => {
-    console.log('new-window ' + frameName);
+    /* console.log('new-window ' + frameName);
     console.log('new-window ' + disposition);
     console.log('new-window ' + options);
     console.log('new-window ' + additionalFeatures);
-    console.log('new-window ' + referrer);
+    console.log('new-window ' + referrer); */
 
     if (loadWindow) {
       mainWindow.setBounds(loadWindow.getBounds());
@@ -78,11 +78,11 @@ const createMainWindow = () => {
   });
 
   mainWindow.webContents.on('will-redirect', (event, urlToGo, isInPlace, isMainFrame, frameProcessId, frameRoutingId) => {
-    console.log('will-redirect ' + urlToGo);
+    /* console.log('will-redirect ' + urlToGo);
     console.log('will-redirect ' + isInPlace);
     console.log('will-redirect ' + isMainFrame);
     console.log('will-redirect ' + frameProcessId);
-    console.log('will-redirect ' + frameRoutingId);
+    console.log('will-redirect ' + frameRoutingId); */
     if (!isInPlace) {
       //mainFrame added for stop opening random tabs for ad queries
       if (isMainFrame) {
@@ -103,7 +103,7 @@ const createMainWindow = () => {
       mainWindow.hide();
       loadWindow.show();
     }
-    console.log("ExternalResourceClosed");
+    /* console.log("ExternalResourceClosed"); */
   });
 
   ipcMain.on('DocumentStartLoading', (event) => {
@@ -112,7 +112,7 @@ const createMainWindow = () => {
       mainWindow.hide();
       loadWindow.show();
     }
-    console.log("DocumentStartLoading");
+    /* console.log("DocumentStartLoading"); */
   });
 
   ipcMain.on('DocumentFinishedLoading', (event) => {
@@ -121,7 +121,7 @@ const createMainWindow = () => {
       loadWindow.hide();
       mainWindow.show();
     }
-    console.log("DocumentFinishedLoading");
+    /* console.log("DocumentFinishedLoading"); */
   });
 
   mainWindow.webContents.on('did-finish-load', () => {
@@ -133,11 +133,11 @@ const createMainWindow = () => {
       loadWindow.hide();
       mainWindow.show();
     }
-    console.log("did-finish-load");
+    /* console.log("did-finish-load"); */
   });
 
   mainWindow.webContents.on('will-navigate', (event, urlToGo) => {
-    console.log('will-navigate ' + urlToGo);
+    /* console.log('will-navigate ' + urlToGo); */
     if (loadWindow) {
       loadWindow.setBounds(mainWindow.getBounds());
       mainWindow.hide();
