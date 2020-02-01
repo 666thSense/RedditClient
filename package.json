@@ -32,30 +32,30 @@
       "packagerConfig": {
         "appCopyright": "MIT",
         "asar": true,
-        "icon": "./src/assets/icon.icns"      
+        "icon": "./src/assets/icon-512.png",
+        "name": "RedditClient"
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "exe": "RedditClient",
-            "iconUrl": "./src/assets/icon.ico",
-            "setupExe": "RedditClient",
-            "setupIcon": "./src/assets/icon.ico",
-            "setupMsi": "RedditClient"
+            "exe": "RedditClient.exe",
+            "iconUrl": "file://Users/jsh/Documents/WebStuff/RedditClient/src/assets/icon-512.ico",
+            "setupExe": "RedditClient.exe",
+            "setupIcon": "./src/assets/icon-512.ico"
           }
         },
         {
           "name": "@electron-forge/maker-dmg",
           "config": {
-            "icon": "./src/assets/icon.icns",
+            "icon": "./src/assets/icon-512.icns",
             "name": "RedditClient"
           }
         },
         {
           "name": "@electron-forge/maker-deb",
           "config": {
-            "icon": "./src/assets/512x512.png",
+            "icon": "./src/assets/icon-512.png",
             "maintainer": "Joshua H.",
             "categories": [
               "Network"
@@ -71,8 +71,8 @@
         {
           "name": "@electron-forge/maker-rpm",
           "config": {
-            "options":{
-              "icon": "./src/assets/512x512.png",
+            "options": {
+              "icon": "./src/assets/icon-512.png",
               "maintainer": "Joshua H.",
               "categories": [
                 "Network"
