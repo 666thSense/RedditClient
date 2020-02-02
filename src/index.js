@@ -32,7 +32,7 @@ const createMainWindow = () => {
   // Create the main browser window.
   mainWindow = new BrowserWindow({
     title: 'RedditClient',
-    // icon: `${__dirname}/assets/icon-512.png`,
+    icon: `${__dirname}/assets/icon-512.png`,
     // hide window until fully loaded
     show: false,
     width: 1280,

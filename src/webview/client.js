@@ -2,10 +2,6 @@ console.log("Hi there, Im the awesome Client script!");
 const { ipcRenderer } = require('electron')
 
 window.addEventListener("load", function (event) {
-    ipcRenderer.send('DocumentFinishedLoading');
-});
-
-document.addEventListener("DOMContentLoaded", function (event) {
     console.log("DOM fully loaded and parsed");
     //ipcRenderer.sendSync('DocumentFinishedLoading');
 
@@ -47,6 +43,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     // Start observing the target node for configured mutations
     observer.observe(document.body, config);
 
+});
+
+window.addEventListener("load", function (event) {
+    ipcRenderer.send('DocumentFinishedLoading');
 });
 
 function goClose() {
