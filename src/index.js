@@ -2,7 +2,8 @@ const {
   app,
   BrowserWindow,
   shell,
-  ipcMain
+  ipcMain,
+  Menu
 } = require('electron');
 const contextMenu = require('electron-context-menu');
 
@@ -44,7 +45,9 @@ const createMainWindow = () => {
   });
 
   // remove default menu
+  mainWindow.setMenu(null);
   mainWindow.removeMenu();
+  Menu.setApplicationMenu(null)
 
   // and load the Reddit Frontpage.
   mainWindow.webContents.loadURL(`https://www.reddit.com`);
