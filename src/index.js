@@ -31,7 +31,8 @@ contextMenu({
       label: `Search on ${getSubReddit(mainWindow.webContents.getURL())}`,
       visible:
           mainWindow.webContents.getURL().match(/^https:\/\/www.reddit.com\/r\/.*/) &&
-          params.selectionText.trim().length > 0,
+              params.selectionText.trim().length > 0
+      ? true : false, //I know is redundant, but for some reason fixed the Search on Null problem
       click: () =>{
         let subReddit = getSubReddit(mainWindow.webContents.getURL());
         browserWindow.loadURL(`https://reddit.com/${subReddit[0]}search?q=${encodeURIComponent(params.selectionText)}&restrict_sr=1`).then(console.log);
