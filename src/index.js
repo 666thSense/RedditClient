@@ -20,22 +20,34 @@ contextMenu({
     }
   },
   {
-    label: `Search on Reddit`,
+    label: `Search on Reddit for “{selection}”`,
     visible: params.selectionText.trim().length > 0,
     click: () => {
-      browserWindow.loadURL(`https://reddit.com/search/?q=${encodeURIComponent(params.selectionText)}`).then(console.log);
+      loaded = false;
+      if (loadWindow  && !loaded) {
+        loadWindow.setBounds(mainWindow.getBounds());
+        mainWindow.hide();
+        loadWindow.show();
+      }
+      mainWindow.webContents.loadURL(`https://reddit.com/search/?q=${encodeURIComponent(params.selectionText)}`).then(console.log);
       console.log(`https://reddit.com/search/?q=${encodeURIComponent(params.selectionText)}`)
     }
   },
   {
-    label: `Search on ${getSubReddit(mainWindow.webContents.getURL())}`,
+    label: `Search on ${getSubReddit(mainWindow.webContents.getURL())} for “{selection}”`,
     visible:
       mainWindow.webContents.getURL().match(/^https:\/\/www.reddit.com\/r\/.*/) &&
         params.selectionText.trim().length > 0
         ? true : false, //I know is redundant, but for some reason fixed the Search on Null problem
     click: () => {
+      loaded = false;
+      if (loadWindow  && !loaded) {
+        loadWindow.setBounds(mainWindow.getBounds());
+        mainWindow.hide();
+        loadWindow.show();
+      }
       let subReddit = getSubReddit(mainWindow.webContents.getURL());
-      browserWindow.loadURL(`https://reddit.com/${subReddit[0]}search?q=${encodeURIComponent(params.selectionText)}&restrict_sr=1`).then(console.log);
+      mainWindow.webContents.loadURL(`https://reddit.com/${subReddit[0]}search?q=${encodeURIComponent(params.selectionText)}&restrict_sr=1`).then(console.log);
       console.log(`https://reddit.com/${subReddit[0]}search?q=${encodeURIComponent(params.selectionText)}&restrict_sr=1`)
     }
   }]
@@ -97,6 +109,11 @@ const createMainWindow = () => {
 
   //NEW TABMANAGEMENT
   mainWindow.webContents.on('will-navigate', (event, urlToGo) => {
+    if (loadWindow && !loaded) {
+      loadWindow.setBounds(mainWindow.getBounds());
+      mainWindow.hide();
+      loadWindow.show();
+    }
     if (!urlToGo.match(/^https:\/\/www.reddit.com.*/) && !urlToGo.match(/^https:\/\/.*.redd.it.*/)) {
       // console.log("will-navigate " + urlToGo.toString())
       event.preventDefault();
@@ -180,7 +197,7 @@ const createMainWindow = () => {
       loadWindow.hide();
       mainWindow.show();
     }
-    /* console.log("DocumentFinishedLoading"); */
+    console.log("DocumentFinishedLoading");
   });
 
   mainWindow.webContents.on('did-finish-load', () => {
@@ -194,15 +211,6 @@ const createMainWindow = () => {
       loaded = true;
     }
     /* console.log("did-finish-load"); */
-  });
-
-  mainWindow.webContents.on('will-navigate', (event, urlToGo) => {
-    /* console.log('will-navigate ' + urlToGo); */
-    if (loadWindow && !loaded) {
-      loadWindow.setBounds(mainWindow.getBounds());
-      mainWindow.hide();
-      loadWindow.show();
-    }
   });
 
   /* mainWindow.webContents.on('did-stop-loading', () => {
