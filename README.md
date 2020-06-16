@@ -6,5 +6,8 @@
 
 This is the official Repo for the [RedditClient](https://666thsense.com/RedditClient/) App built by [666th Sense Studios](https://666thsense.com/).
 
+# Setup
+Clone repository, cd into project directory, run
+```npm install``` then start the app with ```npm start```
 
 The Software is Licensed under the [MIT License](https://opensource.org/licenses/MITm).
