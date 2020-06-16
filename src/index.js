@@ -210,7 +210,7 @@ const createMainWindow = () => {
       mainWindow.show();
       loaded = true;
     }
-    /* console.log("did-finish-load"); */
+    console.log("did-finish-load");
   });
 
   /* mainWindow.webContents.on('did-stop-loading', () => {
