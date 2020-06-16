@@ -19,26 +19,26 @@ contextMenu({
       });
     }
   },
-    {
-      label: `Search on Reddit`,
-      visible: params.selectionText.trim().length > 0,
-      click: () =>{
-        browserWindow.loadURL(`https://reddit.com/search/?q=${encodeURIComponent(params.selectionText)}`).then(console.log);
-        console.log(`https://reddit.com/search/?q=${encodeURIComponent(params.selectionText)}`)
-      }
-    },
-    {
-      label: `Search on ${getSubReddit(mainWindow.webContents.getURL())}`,
-      visible:
-          mainWindow.webContents.getURL().match(/^https:\/\/www.reddit.com\/r\/.*/) &&
-              params.selectionText.trim().length > 0
-      ? true : false, //I know is redundant, but for some reason fixed the Search on Null problem
-      click: () =>{
-        let subReddit = getSubReddit(mainWindow.webContents.getURL());
-        browserWindow.loadURL(`https://reddit.com/${subReddit[0]}search?q=${encodeURIComponent(params.selectionText)}&restrict_sr=1`).then(console.log);
-        console.log(`https://reddit.com/${subReddit[0]}search?q=${encodeURIComponent(params.selectionText)}&restrict_sr=1`)
-      }
-    }]
+  {
+    label: `Search on Reddit`,
+    visible: params.selectionText.trim().length > 0,
+    click: () => {
+      browserWindow.loadURL(`https://reddit.com/search/?q=${encodeURIComponent(params.selectionText)}`).then(console.log);
+      console.log(`https://reddit.com/search/?q=${encodeURIComponent(params.selectionText)}`)
+    }
+  },
+  {
+    label: `Search on ${getSubReddit(mainWindow.webContents.getURL())}`,
+    visible:
+      mainWindow.webContents.getURL().match(/^https:\/\/www.reddit.com\/r\/.*/) &&
+        params.selectionText.trim().length > 0
+        ? true : false, //I know is redundant, but for some reason fixed the Search on Null problem
+    click: () => {
+      let subReddit = getSubReddit(mainWindow.webContents.getURL());
+      browserWindow.loadURL(`https://reddit.com/${subReddit[0]}search?q=${encodeURIComponent(params.selectionText)}&restrict_sr=1`).then(console.log);
+      console.log(`https://reddit.com/${subReddit[0]}search?q=${encodeURIComponent(params.selectionText)}&restrict_sr=1`)
+    }
+  }]
 });
 
 //Although it's only one line, it may be used frequently, may want to create a utilities package for things like this
@@ -95,6 +95,19 @@ const createMainWindow = () => {
     event.preventDefault();
   });
 
+  //NEW TABMANAGEMENT
+  mainWindow.webContents.on('will-navigate', (event, urlToGo) => {
+    if (!urlToGo.match(/^https:\/\/www.reddit.com.*/) && !urlToGo.match(/^https:\/\/.*.redd.it.*/)) {
+      // console.log("will-navigate " + urlToGo.toString())
+      event.preventDefault();
+      shell.openExternal(urlToGo).catch(err => {
+        if (err) console.log(err)
+      })
+    } else {
+      loaded = false
+    }
+  });
+
   // open external in default browser
   mainWindow.webContents.on('new-window', (event, urlToGo, frameName, disposition, options, additionalFeatures, referrer) => {
     /* console.log('new-window ' + frameName);
@@ -115,32 +128,33 @@ const createMainWindow = () => {
     })
   });
 
-  mainWindow.webContents.on('will-redirect', (event, urlToGo, isInPlace, isMainFrame, frameProcessId, frameRoutingId) => {
-    /* console.log('will-redirect ' + urlToGo);
-    console.log('will-redirect ' + isInPlace);
-    console.log('will-redirect ' + isMainFrame);
-    console.log('will-redirect ' + frameProcessId);
-    console.log('will-redirect ' + frameRoutingId); */
-    if (!isInPlace) {
-      //mainFrame added for stop opening random tabs for ad queries
-      if (isMainFrame) {
-        if (loadWindow && !loaded) {
-          console.log("THIS IS IT")
-          mainWindow.setBounds(loadWindow.getBounds());
-          loadWindow.hide();
-          mainWindow.show();
-        }
-        // If the URL is not in the Reddit domain then open in the browser
-        if (!urlToGo.match(/^https:\/\/www.reddit.com.*/)){
-          console.log(""+ urlToGo.toString())
-          event.preventDefault();
-          shell.openExternal(urlToGo).catch(err => {
-            if (err) console.log(err)
-          })
-        }
-      }
-    }
-  });
+  // OLD TAB MANAGEMENT
+  // mainWindow.webContents.on('will-redirect', (event, urlToGo, isInPlace, isMainFrame, frameProcessId, frameRoutingId) => {
+  //   console.log('will-redirect ' + urlToGo);
+  //   console.log('will-redirect ' + isInPlace);
+  //   console.log('will-redirect ' + isMainFrame);
+  //   console.log('will-redirect ' + frameProcessId);
+  //   console.log('will-redirect ' + frameRoutingId);
+  //   if (!isInPlace) {
+  //     //mainFrame added for stop opening random tabs for ad queries
+  //     if (isMainFrame) {
+  //       if (loadWindow && !loaded) {
+  //         console.log("THIS IS IT")
+  //         mainWindow.setBounds(loadWindow.getBounds());
+  //         loadWindow.hide();
+  //         mainWindow.show();
+  //       }
+  //       // If the URL is not in the Reddit domain then open in the browser
+  //       if (!urlToGo.match(/^https:\/\/www.reddit.com.*/)) {
+  //         console.log("" + urlToGo.toString())
+  //         event.preventDefault();
+  //         shell.openExternal(urlToGo).catch(err => {
+  //           if (err) console.log(err)
+  //         })
+  //       }
+  //     }
+  //   }
+  // });
 
   ipcMain.on('ExternalResourceClosed', (event) => {
     if (loadWindow && !loaded) {
@@ -157,7 +171,7 @@ const createMainWindow = () => {
       mainWindow.hide();
       loadWindow.show();
     }
-     console.log("DocumentStartLoading");
+    console.log("DocumentStartLoading");
   });
 
   ipcMain.on('DocumentFinishedLoading', (event) => {
@@ -232,7 +246,7 @@ const createLoadWindow = () => {
     loadWindow.setBounds(mainWindow.getBounds());
   }
 
-  loadWindow.loadURL(`file://${__dirname}/loadingScreen/loadingScreen.html`).catch(err =>{
+  loadWindow.loadURL(`file://${__dirname}/loadingScreen/loadingScreen.html`).catch(err => {
     console.log(err);
   });
 
@@ -271,7 +285,8 @@ app.on('activate', () => {
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null || loadWindow === null) {
     mainWindow = null;
-    loadWindow = null
+    loadWindow = null;
+    loaded = false;
     createMainWindow();
     createLoadWindow();
   }
